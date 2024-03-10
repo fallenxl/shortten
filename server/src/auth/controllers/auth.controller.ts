@@ -39,8 +39,10 @@ export class AuthController {
       const user = await this.authService.validateUserByGoogle(req);
       return res
         .cookie('data.token', user.access_token, {
-          sameSite: 'lax',
+          sameSite: 'none',
           httpOnly: true,
+          secure: true,
+          domain: process.env.FRONTEND_URL,
           
         })
         .redirect(process.env.FRONTEND_URL);
