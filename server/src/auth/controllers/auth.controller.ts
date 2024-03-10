@@ -30,7 +30,6 @@ export class AuthController {
   @Get('google')
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Res() res: Response) {
-    res.redirect('/auth/google/callback');
   }
 
   @Get('google/callback')
@@ -40,20 +39,13 @@ export class AuthController {
       const user = await this.authService.validateUserByGoogle(req);
       return res
         .cookie('data.token', user.access_token)
-        .redirect('http://localhost:3000');
+        .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
         message: 'Error',
         error: error.message,
       };
     }
-  }
-
-  @Get('google/logout')
-  @UseGuards(AuthGuard('google'))
-  async googleLogout(@Req() req, @Res() res: Response) {
-    req.logout();
-    res.redirect('http://localhost:3000');
   }
 
   @Get('github')
@@ -68,7 +60,7 @@ export class AuthController {
       const user = await this.authService.validateUserByGithub(req);
       return res
         .cookie('data.token', user.access_token)
-        .redirect('http://localhost:3000');
+        .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
         message: 'Error',
