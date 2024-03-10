@@ -29,6 +29,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
+    "passport": "^0.7.0",
     "passport-github": "^1.1.0",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.11.3",

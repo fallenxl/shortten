@@ -2,7 +2,7 @@
 import { formatDate } from "@/utils";
 import { Check, ChevronsUpDown, Copy, Trash } from "lucide-react";
 import useCopyToClipboard from "@/hooks/useCopyToClipboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -31,7 +31,6 @@ export default function ShortenedUrlCard({ url, variant = "compact" }: Props) {
   const handleDelete = () => {
     dispatch(deleteURL(url.id) as any).then(() => setOpenModal(false));
   };
-
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="p-4 rounded-lg border border-dashed border-gray-400 bg-white flex items-center gap-4 mr-2">
@@ -122,7 +121,7 @@ export default function ShortenedUrlCard({ url, variant = "compact" }: Props) {
           <>
             <div className="flex items-center justify-between ">
               <p className="text-xs text-gray-400">
-                Clicks: {url.clicks.toLocaleString()}
+                Clicks: {url.clicks} | Created on {formatDate(url.createdAt)}
               </p>
               <div className="flex items-center gap-2 ">
                 <Button

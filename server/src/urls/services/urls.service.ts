@@ -94,9 +94,10 @@ export class UrlsService {
   }
   async getURLsByUser(@Req() req: Request) {
     try {
+      const columns = ['url.id', 'url.originalURL', 'url.shortURL', 'url.clicks', 'url.createdAt', 'url.expiresAt'];
       const urls = await this.urlRepository
         .createQueryBuilder('url')
-        .select(['url.id', 'url.originalURL', 'url.shortURL', 'url.clicks'])
+        .select(columns)
         .where('url.userID = :userID', { userID: req.sub })
         .orderBy('url.createdAt', 'DESC')
         .getMany();

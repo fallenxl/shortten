@@ -53,7 +53,7 @@ export const createURL =
   async (dispatch: Dispatch): Promise<void | string> => {
     try {
       dispatch(startLoading());
-      const res = await axios.post<IUrl>(config.API_URL + "url/create", url);
+      const res = await axios.post<IUrl>(config.API_URL + "api/url/create", url);
       if (typeof res === "string") {
         dispatch(loadingFailed(res));
         return res;
@@ -77,7 +77,7 @@ export const createURL =
 
 export const getURLs = () => async (dispatch: Dispatch) => {
   try {
-    const res = await axios.get<IUrl[]>(config.API_URL + "url/all");
+    const res = await axios.get<IUrl[]>(config.API_URL + "api/url/all");
     if (typeof res === "string") {
       console.log(`Error: ${res}`);
     }
@@ -103,7 +103,7 @@ export const getURLsFromLocalStorage = () => (dispatch: Dispatch) => {
 export const deleteURL = (id: string) => async (dispatch: Dispatch) => {
   try {
     dispatch(startLoading());
-    await axios.delete(config.API_URL + `url/delete/${id}`);
+    await axios.delete(config.API_URL + `api/url/delete/${id}`);
     dispatch(removeURL(id));
     dispatch(loadingSuccess());
   } catch (error) {

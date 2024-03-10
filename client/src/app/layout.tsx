@@ -16,6 +16,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ShorttEn</title>
+        <meta name="description" content="Shortten es un acortador de URL que te permite crear enlaces cortos y fáciles de compartir. Con Shortten, puedes reducir la longitud de tus URLs largas
+         y obtener estadísticas sobre el uso de tus enlaces acortados. ¡Prueba Shortten hoy mismo para simplificar tus enlaces!"/>
+
+      </head>
       <body className={inter.className}>
         <Provider store={store}>
           <AuthGuard>

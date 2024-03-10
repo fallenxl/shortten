@@ -12,7 +12,10 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
-
+import * as dotenv from "dotenv";
+dotenv.config({
+  path: "../../../.env",
+});
 export default function URLForm() {
   const dispatch = useDispatch();
   const urlInitialState: ICreateURL = {
@@ -44,6 +47,7 @@ export default function URLForm() {
     if (!isOpen) {
       setUrl({ ...url, slug: "" });
     }
+    alert(process.env.URL)
   }, [isOpen]);
 
   return (
