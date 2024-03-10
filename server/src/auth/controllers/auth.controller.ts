@@ -39,11 +39,13 @@ export class AuthController {
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
     try {
       const user = await this.authService.validateUserByGoogle(req);
-      res.cookie('data.token', user.access_token, {
-        sameSite: 'none',
-        secure: true,
-      });
-      return res.redirect(process.env.FRONTEND_URL);
+      res
+        .cookie('data.token', user.access_token, {
+          sameSite: 'lax',
+          secure: true,
+          domain: process.env.FRONTEND_URL,
+        })
+        .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
         message: 'Error',
@@ -62,10 +64,13 @@ export class AuthController {
     // Redirige o maneja la lógica después de la autenticación
     try {
       const user = await this.authService.validateUserByGithub(req);
-      res.cookie('data.token', user.access_token, {
-        sameSite: 'none',
-        secure: true,
-      });
+      res
+        .cookie('data.token', user.access_token, {
+          sameSite: 'lax',
+          secure: true,
+          domain: process.env.FRONTEND_URL,
+        })
+        .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
         message: 'Error',
