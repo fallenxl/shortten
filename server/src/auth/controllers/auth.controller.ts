@@ -40,10 +40,12 @@ export class AuthController {
     try {
       const user = await this.authService.validateUserByGoogle(req);
       return res
+        .status(200)
         .cookie('data.token', user.access_token, {
           httpOnly: true,
           domain: 'vercel.app',
         })
+        .json(user)
         .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
@@ -64,11 +66,13 @@ export class AuthController {
     try {
       const user = await this.authService.validateUserByGithub(req);
       return res
-        .cookie('data.token', user.access_token, {
-          httpOnly: true,
-          domain: 'vercel.app',
-        })
-        .redirect(process.env.FRONTEND_URL);
+      .status(200)
+      .cookie('data.token', user.access_token, {
+        httpOnly: true,
+        domain: 'vercel.app',
+      })
+      .json(user)
+      .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
         message: 'Error',
