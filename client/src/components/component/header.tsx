@@ -18,7 +18,7 @@ export default function Header() {
       <Link href="/">
         <h2 className="flex items-center text-4xl font-bold tracking-tighter sm:text-3xl md:text-4xl">
           {/* <Link2 size={24} className="mr-2 -rotate-45" /> */}
-          Shortt<span className="text-gray-500 underline">E</span>ner
+          Shortt<span className="text-gray-500 underline">E</span>n
         </h2>
       </Link>
       {!user && <p className="sm:hidden text-gray-600 text-xs font-medium">Sign in with</p>}
