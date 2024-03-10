@@ -65,7 +65,11 @@ export class AuthController {
     try {
       const user = await this.authService.validateUserByGithub(req);
       return res
-        .cookie('data.token', user.access_token)
+        .cookie('data.token', user.access_token, {
+          sameSite: 'none',
+          domain: process.env.FRONTEND_URL,
+        
+        })
         .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {

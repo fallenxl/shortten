@@ -11,12 +11,9 @@ async function bootstrap() {
   app.use(morgan('dev'));
 
   app.enableCors({
-    origin: "*",
-    allowedHeaders: "*",
-    methods: "*",
+    origin: "https://shorttener.vercel.app/",
     credentials: true,
-    maxAge: 3600,
-  
+    
   })
 
   app.setGlobalPrefix('api', {
