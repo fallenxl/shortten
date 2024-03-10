@@ -8,44 +8,42 @@ import { UsersService } from 'src/users/services/users.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private readonly userService: UsersService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
+  ) {}
 
   @Get('profile')
   @UseGuards(AuthGuardJwt)
   async getProfile(@Req() req) {
     try {
-        const user = await this.userService.findOne(req.sub);
-        if(!user) {
-          throw new ErrorManager({
-            message: 'User not found',
-            type: 'BAD_REQUEST',
-          })
-        }
+      const user = await this.userService.findOne(req.sub);
+      if (!user) {
+        throw new ErrorManager({
+          message: 'User not found',
+          type: 'BAD_REQUEST',
+        });
+      }
 
-        return user;
+      return user;
     } catch (error) {
-        throw ErrorManager.createSignatureError(error.message);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Res() res: Response) {
-  }
+  async googleAuth(@Res() res: Response) {}
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
     try {
       const user = await this.authService.validateUserByGoogle(req);
-      return res
-        .cookie('data.token', user.access_token, {
-          sameSite: 'none',
-          httpOnly: true,
-          secure: true,
-          domain: process.env.FRONTEND_URL,
-          
-        })
-        .redirect(process.env.FRONTEND_URL);
+      res.cookie('data.token', user.access_token, {
+        sameSite: 'none',
+        secure: true,
+      });
+      return res.redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
         message: 'Error',
@@ -64,9 +62,10 @@ export class AuthController {
     // Redirige o maneja la lógica después de la autenticación
     try {
       const user = await this.authService.validateUserByGithub(req);
-      return res
-        .setHeader('Set-Cookie', `data.token=${user.access_token}; HttpOnly; Secure; SameSite=None;`)
-        .redirect(process.env.FRONTEND_URL);
+      res.cookie('data.token', user.access_token, {
+        sameSite: 'none',
+        secure: true,
+      });
     } catch (error) {
       return {
         message: 'Error',
