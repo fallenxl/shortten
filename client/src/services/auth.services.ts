@@ -1,15 +1,16 @@
+import config from "@/config";
 import axios from "axios";
 
 export function getProfile() {
-  return axios.get("http://localhost:4001/api/auth/profile");
+  return axios.get(config.API_URL + "auth/profile");
 }
 
 export function loginWithGoogle() {
-  window.open("http://localhost:4001/api/auth/google", "_self");
+  window.open(config.API_URL + "auth/google", "_self");
 }
 
 export function loginWithGithub() {
-  window.open("http://localhost:4001/api/auth/github", "_self");
+  window.open(config.API_URL + "auth/github", "_self");
 }
 
 export function logout() {
@@ -19,5 +20,5 @@ export function logout() {
       document.cookie = `${cookie}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     }
   });
-   window.location.href = "/";
+  window.location.href = "/";
 }
