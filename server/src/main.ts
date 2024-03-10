@@ -14,13 +14,16 @@ async function bootstrap() {
     origin: "*",
     allowedHeaders: "*",
     methods: "*",
+    credentials: true,
+    maxAge: 3600,
+  
   })
 
   app.setGlobalPrefix('api', {
     exclude: ['/:shortUrl'],
   });
   await app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 }
 bootstrap();
