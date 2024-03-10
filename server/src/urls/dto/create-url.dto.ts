@@ -7,5 +7,5 @@ export class CreateUrlDto {
 
     @IsString()
     @IsOptional()
-    shortURL?: string;
+    slug?: string;
 }

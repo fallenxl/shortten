@@ -38,4 +38,8 @@ export class UsersService {
       throw new Error(error.message);
     }
   }
+
+  async findOne(id: string) {
+    return await this.userRepository.createQueryBuilder('user').select(['user.email', 'user.name', 'user.avatar']).where('user.id = :id', { id }).getOne();
+  }
 }

@@ -4,6 +4,7 @@ import { UpdateUrlDto } from '../dto/update-url.dto';
 import { UrlsService } from '../services/urls.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { Request } from 'express';
+import { OptionalAuthGuard } from 'src/auth/guards';
 
 @Controller('url')
 
@@ -11,7 +12,7 @@ export class UrlsController {
   constructor(private readonly urlService: UrlsService) {}
 
   @Post('create')
-  @UseGuards(AuthGuard)
+  @UseGuards(OptionalAuthGuard)
   create(@Body() createUrlDto: CreateUrlDto, @Req() req: Request){
     return this.urlService.create(createUrlDto, req);
   }
@@ -21,13 +22,13 @@ export class UrlsController {
   findAll(@Req() req: Request) {
     return this.urlService.getURLsByUser(req);
   }
-  @Patch(':id')
+  @Patch('update/:id')
   @UseGuards(AuthGuard)
   update(@Param('id') id: string, @Body() updateUrlDto: UpdateUrlDto) {
     return this.urlService.updateURL(id, updateUrlDto);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   @UseGuards(AuthGuard)
   remove(@Param('id') id: string) {
     return this.urlService.remove(id);

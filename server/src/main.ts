@@ -10,7 +10,11 @@ async function bootstrap() {
 
   app.use(morgan('dev'));
 
-  app.enableCors()
+  app.enableCors({
+    origin: "*",
+    allowedHeaders: "*",
+    methods: "*",
+  })
 
   app.setGlobalPrefix('api', {
     exclude: ['/:shortUrl'],

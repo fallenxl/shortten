@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  Req,
-  Res,
-  Scope,
-} from '@nestjs/common';
+import { Injectable, Req, Res, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UrlEntity } from '../entities/url.entity';
 import { Repository } from 'typeorm';
@@ -12,6 +7,9 @@ import { createHash } from 'crypto';
 import { CreateUrlDto } from '../dto/create-url.dto';
 import { ErrorManager } from 'src/utilities/error.manager';
 import { UpdateUrlDto } from '../dto/update-url.dto';
+import * as dotenv from 'dotenv';
+import { isNotEmptyString } from 'src/utilities';
+dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
 export class UrlsService {
@@ -19,37 +17,44 @@ export class UrlsService {
     @InjectRepository(UrlEntity)
     private readonly urlRepository: Repository<UrlEntity>,
   ) {}
-  async create(createUrlDto: CreateUrlDto, @Req() req: Request){
+  async create(createUrlDto: CreateUrlDto, @Req() req: Request) {
     try {
-      if (createUrlDto.shortURL) {
+      if (createUrlDto.slug) {
         const urlFound = await this.urlRepository.findOne({
-          where: { shortURL: createUrlDto.shortURL },
+          where: { slug: createUrlDto.slug },
         });
         if (urlFound) {
           throw new ErrorManager({
             type: 'CONFLICT',
-            message: 'Short URL already exists',
+            message: 'Slug already taken',
           });
         }
       }
+;
 
       const url = new UrlEntity();
       url.originalURL = createUrlDto.originalURL;
-      url.shortURL =
-        createUrlDto.shortURL ?? this.hashURL(createUrlDto.originalURL);
-      url.userID = req.sub;
-      console.log(req.user);
+      url.slug = isNotEmptyString(createUrlDto.slug) ? createUrlDto.slug : this.hashURL(createUrlDto.originalURL);
+      url.shortURL = `${process.env.FRONTEND_URL}/${url.slug}`;
+      url.userID = req.sub ?? null;
+      url.expiresAt = req.sub
+        ? null
+        : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // expires in 7 days if user is not logged in
       await this.urlRepository.save(url);
       return {
-        message: 'URL created',
-        url,
+        id: url.id,
+        userID: url.userID,
+        originalURL: url.originalURL,
+        shortURL: url.shortURL,
+        expiresAt: url.expiresAt,
+        click: req.sub ? url.clicks : null,
+        createdAt: url.createdAt,
       };
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
 
-  
   async remove(id: string) {
     try {
       const url = await this.urlRepository.findOne({ where: { id } });
@@ -57,7 +62,7 @@ export class UrlsService {
         throw new ErrorManager({
           type: 'NOT_FOUND',
           message: 'URL not found',
-        })
+        });
       }
       await this.urlRepository.remove(url);
       return {
@@ -74,10 +79,11 @@ export class UrlsService {
         throw new ErrorManager({
           type: 'NOT_FOUND',
           message: 'URL not found',
-        })
+        });
       }
       url.originalURL = updateUrlDto.originalURL;
-      url.shortURL = updateUrlDto.shortURL;
+      url.slug = updateUrlDto.slug ?? this.hashURL(updateUrlDto.originalURL);
+      url.shortURL = `${process.env.BACKEND_URL}/${url.slug}`;
       await this.urlRepository.save(url);
       return {
         message: 'URL updated',
@@ -88,37 +94,36 @@ export class UrlsService {
   }
   async getURLsByUser(@Req() req: Request) {
     try {
-      console.log(req.sub);
-      const urls = await this.urlRepository.createQueryBuilder('url').select([
-        'url.id',
-        'url.originalURL',
-        'url.shortURL',
-        'url.clicks',
-      ]).where('url.userID = :userID', { userID: req.sub }).getMany();
+      const urls = await this.urlRepository
+        .createQueryBuilder('url')
+        .select(['url.id', 'url.originalURL', 'url.shortURL', 'url.clicks'])
+        .where('url.userID = :userID', { userID: req.sub })
+        .orderBy('url.createdAt', 'DESC')
+        .getMany();
       return urls;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
-  async getOriginalURL(shortURL: string, @Res() res: Response) {
+  async getOriginalURL(slug: string, @Res() res: Response) {
     try {
-      const url = await this.urlRepository.findOne({ where: { shortURL } });
+      const url = await this.urlRepository.findOne({ where: { slug: slug } });
       if (!url) {
-       res.redirect(process.env.FRONTEND_URL);
-       throw new ErrorManager({
-        type: 'NOT_FOUND',
-        message: 'URL not found',
-       })
+        res.redirect(process.env.FRONTEND_URL);
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: 'URL not found',
+        });
       }
-      await this.incrementClicks(shortURL);
+      await this.incrementClicks(slug);
       return url;
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
-  async incrementClicks(shortURL: string) {
+  async incrementClicks(slug: string) {
     try {
-      const url = await this.urlRepository.findOne({ where: { shortURL } });
+      const url = await this.urlRepository.findOne({ where: { slug } });
       url.clicks += 1;
       await this.urlRepository.save(url);
       return {
@@ -128,7 +133,7 @@ export class UrlsService {
       throw ErrorManager.createSignatureError(error.message);
     }
   }
-  
+
   hashURL(url: string) {
     const randomComponent = Math.random().toString(36).substring(2, 8);
     const hash = createHash('md5');
