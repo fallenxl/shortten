@@ -39,11 +39,10 @@ export class AuthController {
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
     try {
       const user = await this.authService.validateUserByGoogle(req);
-      res
+      return res
         .cookie('data.token', user.access_token, {
-          sameSite: 'lax',
-          secure: true,
-          domain: process.env.FRONTEND_URL,
+          httpOnly: true,
+          domain: 'vercel.app',
         })
         .redirect(process.env.FRONTEND_URL);
     } catch (error) {
@@ -64,11 +63,10 @@ export class AuthController {
     // Redirige o maneja la lógica después de la autenticación
     try {
       const user = await this.authService.validateUserByGithub(req);
-      res
+      return res
         .cookie('data.token', user.access_token, {
-          sameSite: 'lax',
-          secure: true,
-          domain: process.env.FRONTEND_URL,
+          httpOnly: true,
+          domain: 'vercel.app',
         })
         .redirect(process.env.FRONTEND_URL);
     } catch (error) {
