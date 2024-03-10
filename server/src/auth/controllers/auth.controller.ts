@@ -44,9 +44,8 @@ export class AuthController {
         .cookie('data.token', user.access_token, {
           httpOnly: true,
           domain: 'vercel.app',
-        })
-        .json(user)
-        .redirect(process.env.FRONTEND_URL);
+        }).setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL).redirect(process.env.FRONTEND_URL);
+        
     } catch (error) {
       return {
         message: 'Error',
@@ -66,13 +65,11 @@ export class AuthController {
     try {
       const user = await this.authService.validateUserByGithub(req);
       return res
-      .status(200)
-      .cookie('data.token', user.access_token, {
-        httpOnly: true,
-        domain: 'vercel.app',
-      })
-      .json(user)
-      .redirect(process.env.FRONTEND_URL);
+        .status(200)
+        .cookie('data.token', user.access_token, {
+          httpOnly: true,
+          domain: 'vercel.app',
+        }).redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
         message: 'Error',
