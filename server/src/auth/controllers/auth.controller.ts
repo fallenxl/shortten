@@ -43,9 +43,13 @@ export class AuthController {
         .status(200)
         .cookie('data.token', user.access_token, {
           httpOnly: true,
+          secure: true,
           domain: 'vercel.app',
-        }).setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL).redirect(process.env.FRONTEND_URL);
-        
+          sameSite: 'none',
+          maxAge: 60 * 60 * 24 * 365,
+
+        })
+        .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
         message: 'Error',
@@ -64,10 +68,10 @@ export class AuthController {
     // Redirige o maneja la lógica después de la autenticación
     try {
       const user = await this.authService.validateUserByGithub(req);
-      return res
-        .status(200)
+      res
         .cookie('data.token', user.access_token, {
-          httpOnly: true,
+          sameSite: 'none',
+          secure: true,
           domain: 'vercel.app',
         }).redirect(process.env.FRONTEND_URL);
     } catch (error) {
