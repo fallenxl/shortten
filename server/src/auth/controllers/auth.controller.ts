@@ -40,12 +40,13 @@ export class AuthController {
     try {
       const user = await this.authService.validateUserByGoogle(req);
       return res
-        .cookie('data.token', user.access_token, {
+        .cookie('jwt', user.access_token, {
           secure: true,
           domain: '.shortten.link',
           sameSite: 'none',
           path: '/',
-          expires: new Date(Date.now() + 60 * 60 * 1000),
+          // expires in 365 days
+          expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
         })
         .redirect(process.env.FRONTEND_URL);
     } catch (error) {
@@ -67,12 +68,12 @@ export class AuthController {
     try {
       const user = await this.authService.validateUserByGithub(req);
       res
-        .cookie('data.token', user.access_token, {
+        .cookie('jwt', user.access_token, {
           secure: true,
           domain: '.shortten.link',
           sameSite:'none',
           path: '/',
-          expires: new Date(Date.now() + 60 * 60 * 1000),
+          expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
         })
         .redirect(process.env.FRONTEND_URL);
     } catch (error) {
