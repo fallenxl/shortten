@@ -13,6 +13,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (extractTokenFromCookie()) {
+  
       setIsLoading(true);
       getProfile()
         .then((res) => {

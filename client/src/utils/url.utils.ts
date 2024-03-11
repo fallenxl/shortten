@@ -11,3 +11,7 @@ export const isValidHttpsUrl = (url: string): boolean => {
   export const parseURLShortened = (url: string): string => {
     return url.replace(/(^\w+:|^)\/\//, '');
   }
+
+  export const redirectTo = (url: string): void => {
+    window.open(url, "_blank");
+  }

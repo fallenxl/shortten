@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 
 export default function Home() {
-  const { urls, isError, isLoading } = useSelector(
+  const { urls,  isLoading } = useSelector(
     (state: IAppStore) => state.url
   );
 
@@ -21,7 +21,7 @@ export default function Home() {
       {isLoading && <ProcessingLoading />}
       <div className="bg-gray-50 ">
         <div className=" max-w-screen-xl mx-auto px-6 md:px-6 pb-24 pt-8">
-          <Header />
+          <Header user={user}/>
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12  ">
             <div className="space-y-4 flex flex-col items-center ">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">

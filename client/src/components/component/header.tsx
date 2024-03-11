@@ -9,9 +9,11 @@ import {
 } from "@/services";
 import { useSelector } from "react-redux";
 import { DropdownUserOptions } from "./dropdown-user-options";
+interface IHeaderProps {
+  user: IUser | null;
 
-export default function Header() {
-  const user = useSelector((state: IAppStore) => state.user);
+}
+export default function Header({user}: IHeaderProps) {
 
   return (
     <nav className={`flex ${!user && "flex-col sm:flex-row"} gap-2 items-center justify-between pt-4 pb-10`}>

@@ -42,7 +42,7 @@ export class AuthController {
       return res
         .cookie('jwt', user.access_token, {
           secure: true,
-          domain: '.shortten.link',
+          domain: process.env.NODE_ENV === 'production' ? '.shortten.link' : 'localhost',
           sameSite: 'none',
           path: '/',
           // expires in 365 days
@@ -70,7 +70,7 @@ export class AuthController {
       res
         .cookie('jwt', user.access_token, {
           secure: true,
-          domain: '.shortten.link',
+          domain: process.env.NODE_ENV === 'production' ? '.shortten.link' : 'localhost',
           sameSite:'none',
           path: '/',
           expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
