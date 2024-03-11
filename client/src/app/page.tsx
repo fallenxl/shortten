@@ -14,6 +14,8 @@ export default function Home() {
     (state: IAppStore) => state.url
   );
 
+  const user = useSelector((state: IAppStore) => state.user);
+
   return (
     <>
       {isLoading && <ProcessingLoading />}
@@ -46,14 +48,15 @@ export default function Home() {
                       Latest Links
                     </h2>
                   </div>
-                  <Link
-                    href="/my-links"
-                    className="text-gray-600 font-medium hover:text-gray-800  text-xs flex items-center gap-1"
-                  >
-
-                    See all
-                    <ArrowRight className="w-4 h-4 ml-1" />
-                  </Link>
+                  {user && (
+                    <Link
+                      href="/my-links"
+                      className="text-gray-600 font-medium hover:text-gray-800  text-xs flex items-center gap-1"
+                    >
+                      See all
+                      <ArrowRight className="w-4 h-4 ml-1" />
+                    </Link>
+                  )}
                 </div>
               )}
               {urls.map((url, index) => {

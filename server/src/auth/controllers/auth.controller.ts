@@ -40,7 +40,11 @@ export class AuthController {
     try {
       const user = await this.authService.validateUserByGoogle(req);
       return res
-        .cookie('data.token', user.access_token)
+        .cookie('data.token', user.access_token, {
+          httpOnly: true,
+          domain: 'shortten.link',
+          sameSite: 'none',
+        })
         .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
@@ -61,7 +65,11 @@ export class AuthController {
     try {
       const user = await this.authService.validateUserByGithub(req);
       res
-        .cookie('data.token', user.access_token)
+        .cookie('data.token', user.access_token, {
+          httpOnly: true,
+          domain: 'shortten.link',
+          sameSite:'none'
+        })
         .redirect(process.env.FRONTEND_URL);
     } catch (error) {
       return {
