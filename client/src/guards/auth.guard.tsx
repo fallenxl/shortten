@@ -9,14 +9,15 @@ import { getURLs, getURLsFromLocalStorage } from "@/store/url.slice";
 import { ProcessingLoading } from "@/components/component/processing-loading";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); 
   const dispatch = useDispatch();
   useEffect(() => {
     if (extractTokenFromCookie()) {
+      setIsLoading(true);
       getProfile()
         .then((res) => {
           alert(JSON.stringify(res));
-          if (!res) {
+          if (!res || typeof res === "string") {
             setIsLoading(false);
             return logout();
           }
@@ -32,7 +33,6 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         });
     } else {
       dispatch(getURLsFromLocalStorage() as any);
-      setIsLoading(false);
     }
   }, []);
 
