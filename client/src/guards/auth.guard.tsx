@@ -18,7 +18,6 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         .then((res) => {
           alert(JSON.stringify(res));
           if (!res || typeof res === "string") {
-            setIsLoading(false);
             return logout();
           }
           if (res.data) {
@@ -28,9 +27,9 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
           setIsLoading(false);
         })
         .catch(() => {
-          setIsLoading(false);
           logout();
         });
+        setIsLoading(false);
     } else {
       dispatch(getURLsFromLocalStorage() as any);
     }
