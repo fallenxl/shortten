@@ -1,5 +1,6 @@
 import config from "@/config";
 import axios from "axios";
+import Cookies from 'js-cookie'
 
 export function getProfile() {
   return axios.get(config.API_URL + "api/auth/profile");
@@ -15,10 +16,6 @@ export function loginWithGithub() {
 
 export function logout() {
   // remove token from cookies
-  document.cookie.split(";").forEach((cookie) => {
-    if (cookie.includes("data.token")) {
-      document.cookie = `${cookie}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    }
-  });
+  Cookies.remove('data.token');
   window.location.reload();
 }
