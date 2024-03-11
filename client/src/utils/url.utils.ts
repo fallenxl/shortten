@@ -7,3 +7,7 @@ export const isValidHttpsUrl = (url: string): boolean => {
     const pattern = /^[a-zA-Z0-9-]+$/;
     return pattern.test(slug);
   }
+
+  export const parseURLShortened = (url: string): string => {
+    return url.replace(/(^\w+:|^)\/\//, '');
+  }

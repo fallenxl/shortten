@@ -1,5 +1,5 @@
 "use client";
-import { formatDate } from "@/utils";
+import { formatDate, parseURLShortened } from "@/utils";
 import { Check, ChevronsUpDown, Copy, Trash } from "lucide-react";
 import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 import { useEffect, useState } from "react";
@@ -52,7 +52,7 @@ export default function ShortenedUrlCard({ url, variant = "compact" }: Props) {
             rel="noreferrer"
             className="text-sm font-semibold text-blue-600 hover:underline"
           >
-            {url.shortURL}
+            {parseURLShortened(url.shortURL)}
           </a>
           {!copied ? (
             <Copy
