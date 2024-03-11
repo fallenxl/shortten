@@ -3,7 +3,6 @@ import Footer from "@/components/component/footer";
 import Header from "@/components/component/header";
 import {  IUser } from "@/interfaces";
 import { getProfile, logout } from "@/services";
-import { getURLsFromLocalStorage } from "@/store/url.slice";
 import { setUser } from "@/store/user.slice";
 import { extractTokenFromCookie } from "@/utils";
 import { useEffect } from "react";
