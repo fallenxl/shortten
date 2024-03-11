@@ -22,12 +22,16 @@ export default function ShortenedUrlCard({ url, variant = "compact" }: Props) {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const user = useSelector((state: IAppStore) => state.user);
-  const { copied, copyToClipboard } = useCopyToClipboard();
 
+  const { copied, copyToClipboard } = useCopyToClipboard();
   const handleCopy = () => {
     copyToClipboard(url.shortURL);
   };
 
+  const { copied: copiedOriginal, copyToClipboard: copyToClipboardOriginal } = useCopyToClipboard();
+  const handleCopyOriginal = () => {
+    copyToClipboardOriginal(url.originalURL);
+  };
   const handleDelete = () => {
     dispatch(deleteURL(url.id) as any).then(() => setOpenModal(false));
   };
@@ -97,9 +101,9 @@ export default function ShortenedUrlCard({ url, variant = "compact" }: Props) {
                 {url.originalURL}
               </a>
               <div className="flex items-center gap-2">
-                {!copied ? (
+                {!copiedOriginal ? (
                   <Copy
-                    onClick={() => copyToClipboard(url.originalURL)}
+                    onClick={handleCopyOriginal}
                     size={14}
                     className="inline  text-gray-600 cursor-pointer"
                   />
