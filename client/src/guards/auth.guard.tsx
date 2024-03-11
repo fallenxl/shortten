@@ -13,16 +13,21 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (extractTokenFromCookie()) {
-      getProfile().then((res) => {
-        if (!res) {
-          return logout();
-        }
-        if (res.data) {
-          dispatch(setUser(res.data as IUser));
-          dispatch(getURLs() as any);
-        }
-        setIsLoading(false);
-      });
+      getProfile()
+        .then((res) => {
+          if (!res) {
+            return logout();
+          }
+          if (res.data) {
+            dispatch(setUser(res.data as IUser));
+            dispatch(getURLs() as any);
+          }
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsLoading(false);
+          logout();
+        });
     } else {
       dispatch(getURLsFromLocalStorage() as any);
       setIsLoading(false);
