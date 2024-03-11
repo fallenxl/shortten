@@ -16,7 +16,6 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       getProfile()
         .then((res) => {
-          alert(JSON.stringify(res));
           if (!res || typeof res === "string") {
             return logout();
           }
