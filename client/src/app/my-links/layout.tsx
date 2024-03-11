@@ -28,8 +28,6 @@ export default function Layout({
         .catch(() => {
           logout();
         });
-    } else {
-      dispatch(getURLsFromLocalStorage() as any);
     }
   }, []);
   return (
