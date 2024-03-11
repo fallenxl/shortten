@@ -42,7 +42,7 @@ export class AuthController {
       return res
         .cookie('data.token', user.access_token, {
           httpOnly: true,
-          domain: 'shortten.link',
+          domain: '.shortten.link',
           sameSite: 'none',
         })
         .redirect(process.env.FRONTEND_URL);
@@ -67,7 +67,7 @@ export class AuthController {
       res
         .cookie('data.token', user.access_token, {
           httpOnly: true,
-          domain: 'shortten.link',
+          domain: '.shortten.link',
           sameSite:'none'
         })
         .redirect(process.env.FRONTEND_URL);
