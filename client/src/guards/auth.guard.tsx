@@ -15,7 +15,9 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     if (extractTokenFromCookie()) {
       getProfile()
         .then((res) => {
+          alert(JSON.stringify(res));
           if (!res) {
+            setIsLoading(false);
             return logout();
           }
           if (res.data) {
