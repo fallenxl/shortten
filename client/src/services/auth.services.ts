@@ -16,6 +16,6 @@ export function loginWithGithub() {
 
 export function logout() {
   // remove token from cookies
-  Cookies.remove('data.token');
+  Cookies.remove('jwt');
   window.location.reload();
 }
