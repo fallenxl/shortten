@@ -15,6 +15,6 @@ export function loginWithGithub() {
 
 export function logout() {
   // remove token from cookies
-  document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;  secure; sameSite=None;";
+  document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.shortten.link";
   window.location.href = "/";
 }
