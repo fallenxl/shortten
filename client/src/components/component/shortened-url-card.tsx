@@ -21,7 +21,7 @@ interface Props {
 export default function ShortenedUrlCard({ url, variant = "compact" }: Props) {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
-  const user = useSelector((state: IAppStore) => state.user);
+  const {data:user} = useSelector((state: IAppStore) => state.user);
 
   const { copied, copyToClipboard } = useCopyToClipboard();
   const handleCopy = () => {
