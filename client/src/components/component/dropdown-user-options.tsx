@@ -19,12 +19,16 @@ import { logout } from "@/services";
 import Link from "next/link";
 
 export function DropdownUserOptions() {
-  const {data:user} = useSelector((state: IAppStore) => state.user);
+  const { data: user } = useSelector((state: IAppStore) => state.user);
   return (
     <DropdownMenu>
       <Avatar className="mx-auto w-8 h-8">
-        <AvatarImage alt="user avatar" src={user?.avatar} />
-        <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+        {user && (
+          <>
+            <AvatarImage alt="user avatar" src={user.avatar} />
+            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+          </>
+        )}
       </Avatar>
       <DropdownMenuTrigger asChild>
         <Button className="h-8 w-8 rounded-full  " size="icon" variant="ghost">

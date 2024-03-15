@@ -8,7 +8,6 @@ import URLForm from "@/components/component/url-form";
 import { IAppStore } from "@/interfaces";
 import { ArrowRight, ClockIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function Home() {
