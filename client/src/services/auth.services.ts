@@ -1,6 +1,5 @@
 import config from "@/config";
 import axios from "axios";
-import Cookies from 'js-cookie'
 
 export function getProfile() {
   return axios.get(config.API_URL + "api/auth/profile");

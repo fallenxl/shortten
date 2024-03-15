@@ -1,6 +1,6 @@
-import { IUrl, IUrlState, IUser } from ".";
+import {  IUrlState, IUser, IUserState } from ".";
 
 export interface IAppStore {
-  user: IUser | null;
+  user: IUserState;
   url: IUrlState;
 }

@@ -1,17 +1,33 @@
 import { IUser } from "@/interfaces";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState: IUser | null = null;
+const initialState = {
+  isLoading: true,
+  isErrored: false,
+  data: null as IUser | null,
+};
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     setUser: (state, action) => {
-      localStorage.removeItem("urls");
-      return action.payload;
+      state.data = action.payload;
+
     },
+    isLoading: (state) => {
+      state.isLoading = true;
+      state.isErrored = false;
+    },
+    isErrored: (state) => {
+      state.isLoading = false;
+      state.isErrored = true;
+    },
+    isSuccessful: (state) => {
+      state.isLoading = false;
+      state.isErrored = false;
+    }
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, isLoading, isErrored, isSuccessful } = userSlice.actions;
 export default userSlice.reducer;

@@ -2,6 +2,7 @@ export interface IUrlState {
   urls: IUrl[];
   isLoading: boolean;
   isError: string | null;
+  isCreateLoading: boolean;
 }
 export interface IUrl {
   id: string;

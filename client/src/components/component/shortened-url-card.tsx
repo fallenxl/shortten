@@ -25,7 +25,7 @@ export default function ShortenedUrlCard({ url, variant = "compact" }: Props) {
 
   const { copied, copyToClipboard } = useCopyToClipboard();
   const handleCopy = () => {
-    copyToClipboard(url.shortURL);
+    copyToClipboard(parseURLShortened(url.shortURL));
   };
 
   const { copied: copiedOriginal, copyToClipboard: copyToClipboardOriginal } = useCopyToClipboard();

@@ -21,8 +21,7 @@ export default function URLForm() {
   };
   const [url, setUrl] = useState<ICreateURL>(urlInitialState);
   const [isError, setIsError] = useState<string>("");
-  const URLState = useSelector((state: IAppStore) => state.url);
-  const user = useSelector((state: IAppStore) => state.user);
+  const {data:user} = useSelector((state: IAppStore) => state.user);
 
   function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
     setUrl({ ...url, [e.target.name]: e.target.value });

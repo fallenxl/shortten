@@ -3,3 +3,9 @@ export interface IUser {
     name: string;
     avatar: string;
 }
+
+export interface IUserState {
+    isLoading: boolean;
+    isErrored: boolean;
+    data: IUser | null;
+}

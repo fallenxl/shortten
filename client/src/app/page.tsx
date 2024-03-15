@@ -3,25 +3,26 @@ import Footer from "@/components/component/footer";
 import Header from "@/components/component/header";
 import { ProcessingLoading } from "@/components/component/processing-loading";
 import ShortenedUrlCard from "@/components/component/shortened-url-card";
+import { ShortenedUrlSkeleton } from "@/components/component/shortened-url-skeleton";
 import URLForm from "@/components/component/url-form";
 import { IAppStore } from "@/interfaces";
 import { ArrowRight, ClockIcon } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function Home() {
-  const { urls,  isLoading } = useSelector(
-    (state: IAppStore) => state.url
-  );
+  const { urls, isLoading, isCreateLoading } = useSelector((state: IAppStore) => state.url);
 
-  const user = useSelector((state: IAppStore) => state.user);
+  const { data: user } = useSelector((state: IAppStore) => state.user);
+
 
   return (
     <>
-      {isLoading && <ProcessingLoading />}
+      {isCreateLoading && <ProcessingLoading />}
       <div className="bg-gray-50 ">
         <div className=" max-w-screen-xl mx-auto px-6 md:px-6 pb-24 pt-8">
-          <Header user={user}/>
+          <Header />
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12  ">
             <div className="space-y-4 flex flex-col items-center ">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
@@ -36,7 +37,9 @@ export default function Home() {
               <URLForm />
             </div>
             <div className="grid gap-4 max-h-[25.5em] px-0 lg:px-4 ">
-              {urls.length === 0 ? (
+              {(isLoading && urls.length === 0 )? (
+                <ShortenedUrlSkeleton />
+              ) : (!isLoading && urls.length === 0 )? (
                 <p className="text-sm font-medium leading-none border border-dashed border-gray-400 dark:text-gray-400 text-center py-4">
                   No shortened URLs yet
                 </p>
