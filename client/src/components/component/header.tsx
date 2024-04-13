@@ -6,13 +6,11 @@ import { IAppStore, IUser } from "@/interfaces";
 import { loginWithGithub, loginWithGoogle } from "@/services";
 import { useSelector } from "react-redux";
 import { DropdownUserOptions } from "./dropdown-user-options";
-import { useEffect } from "react";
 import { Skeleton } from "../ui/skeleton";
 export default function Header() {
   const {
     data: user,
     isLoading,
-    isErrored,
   } = useSelector((state: IAppStore) => state.user);
 
   return (
@@ -38,7 +36,7 @@ export default function Header() {
         } sm:w-auto flex items-center gap-4`}
       >
         {!user && isLoading ? (
-          <Skeleton className="w-2/3 flex items-center justify-center h-6 bg-gray-200 " />
+          <Skeleton className="hidden w-2/3 sm:flex items-center justify-center h-6 bg-gray-200 " />
         ) : (
           !user &&
           !isLoading && (
@@ -106,7 +104,7 @@ export default function Header() {
                 Welcome, <span className="font-bold">{user.name}</span>
               </p>
             ) : (
-              <Skeleton className="w-40 flex items-center justify-center h-6 bg-gray-200 " />
+              <Skeleton className="hidden w-40 sm:flex items-center justify-center h-6 bg-gray-200 " />
             )}
             <DropdownUserOptions />
           </div>

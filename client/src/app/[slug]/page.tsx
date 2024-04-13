@@ -9,5 +9,7 @@ export default function Page() {
     window.open(config.API_URL + slug, "_self");
   }, []);
 
+
+  
   return <ProcessingLoading />;
 }
